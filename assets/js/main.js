@@ -107,7 +107,7 @@
     });
   }
 
-  /* Formulare (Kontakt + Flächen-Alarm) → Cloudflare Pages Function /api/kontakt */
+  /* Kontaktformular → /api/kontakt */
   function sendForm(form, msgEl, okText) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -153,8 +153,6 @@
   }
   var kf = document.getElementById("kontaktformular");
   if (kf) sendForm(kf, document.getElementById("kontakt-msg"), "Vielen Dank! Ihre Nachricht ist bei Gerrit Korner angekommen. Wir melden uns so schnell wie möglich.");
-  var af = document.getElementById("alarmformular");
-  if (af) sendForm(af, document.getElementById("alarm-msg"), "Eingetragen. Wir melden uns, sobald eine Fläche frei wird.");
 
   /* Bestätigung nach Formular ohne JavaScript (?gesendet=1) */
   if (/[?&]gesendet=1/.test(location.search)) {
@@ -330,7 +328,7 @@
     });
 
     /* Blöcke weich einblenden, Gruppen gestaffelt */
-    var sel = [".kicker", ".sub", ".hx-lead", ".btn-row", ".g3-badge", ".hx-art", ".cl-art", ".stats > div", ".card3", ".legend li", ".tenant", ".g3-grid > *", ".rows > a", ".post", ".route li", ".f-card", ".k-form", ".k-side > *", ".alarm", ".wa-row", ".tl li", ".gmap-tabs", ".sn-fig", ".sn-facts li", ".detail .txt > *", ".figs > div", ".chips", ".band-head h1 + *"];
+    var sel = [".kicker", ".sub", ".hx-lead", ".btn-row", ".g3-badge", ".hx-art", ".cl-art", ".stats > div", ".card3", ".legend li", ".tenant", ".g3-grid > *", ".rows > a", ".post", ".route li", ".f-card", ".k-form", ".k-side > *", ".tl li", ".gmap-tabs", ".sn-fig", ".sn-facts li", ".detail .txt > *", ".figs > div", ".chips", ".band-head h1 + *"];
     main.querySelectorAll(sel.join(",")).forEach(function (el) {
       if (el.closest(".pop, .tdlg, .split, .rv")) return;
       var sib = el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : 0;

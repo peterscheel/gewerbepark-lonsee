@@ -12,7 +12,7 @@ Reines HTML, CSS und JavaScript – kein Build-Schritt, keine Abhängigkeiten, k
 | `assets/css/style.css` | Gesamtes Styling (Farben oben als Variablen) |
 | `assets/js/main.js` | Menü, Mieter-Filter, Mieter-Finder, Formulare, „Adresse kopieren“ |
 | `assets/img/`, `assets/logos/`, `assets/fonts/` | Bilder (WebP + JPG/PNG), Mieter-Logos, Schrift (TeX Gyre Heros, selbst gehostet) |
-| `functions/api/kontakt.js` | Logik für Kontaktformular und Flächen-Alarm (E-Mail-Versand) |
+| `functions/api/kontakt.js` | Logik für das Kontaktformular (E-Mail-Versand) |
 | `worker/index.js`, `wrangler.jsonc`, `.assetsignore` | Einrichtung als Cloudflare Worker |
 | `_headers` | Sicherheits- und Cache-Header für Cloudflare |
 | `404.html`, `sitemap.xml`, `robots.txt`, Favicons | Standard-Dateien |

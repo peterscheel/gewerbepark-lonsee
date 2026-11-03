@@ -1,5 +1,5 @@
 /**
- * POST /api/kontakt – Kontaktformular und Flächen-Alarm.
+ * POST /api/kontakt – Kontaktformular.
  * Läuft als Cloudflare Pages Function UND im Worker (worker/index.js importiert diese Datei).
  * Versand per Resend (https://resend.com).
  *
@@ -39,27 +39,20 @@ export async function onRequestPost({ request, env }) {
 
   if (data.website) return reply(request, 200, { ok: true }); // Honeypot
 
-  const typ = data.typ === "flaechen-alarm" ? "flaechen-alarm" : "kontakt";
   const f = {};
   for (const k of Object.keys(MAX)) f[k] = clean(data[k], MAX[k]);
 
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email)) {
     return reply(request, 400, { ok: false, error: "Bitte geben Sie eine gültige E-Mail-Adresse an." });
   }
-  if (typ === "kontakt") {
-    if (!f.name || !f.nachricht) return reply(request, 400, { ok: false, error: "Bitte füllen Sie Name und Nachricht aus." });
-    if (data.datenschutz !== "ja") return reply(request, 400, { ok: false, error: "Bitte stimmen Sie der Datenschutzerklärung zu." });
-  }
+  if (!f.name || !f.nachricht) return reply(request, 400, { ok: false, error: "Bitte füllen Sie Name und Nachricht aus." });
+  if (data.datenschutz !== "ja") return reply(request, 400, { ok: false, error: "Bitte stimmen Sie der Datenschutzerklärung zu." });
   if (!env.RESEND_API_KEY || !env.CONTACT_TO || !env.CONTACT_FROM) {
     return reply(request, 503, { ok: false, error: "Das Formular ist noch nicht eingerichtet. Bitte rufen Sie uns an: 0174 323 29 49." });
   }
 
-  const subject = typ === "flaechen-alarm"
-    ? "Flächen-Alarm: neue Eintragung"
-    : `Website-Anfrage: ${f.betreff || "Allgemeine Anfrage"}${f.name ? " – " + f.name : ""}`;
-  const rows = typ === "flaechen-alarm"
-    ? [["E-Mail", f.email], ["Hinweis", "Möchte informiert werden, sobald eine Fläche frei wird."]]
-    : [["Name", f.name], ["Firma", f.firma], ["E-Mail", f.email], ["Telefon", f.telefon], ["Betreff", f.betreff], ["Rückruf", f.rueckruf], ["Nachricht", f.nachricht]];
+  const subject = `Website-Anfrage: ${f.betreff || "Allgemeine Anfrage"}${f.name ? " – " + f.name : ""}`;
+  const rows = [["Name", f.name], ["Firma", f.firma], ["E-Mail", f.email], ["Telefon", f.telefon], ["Betreff", f.betreff], ["Rückruf", f.rueckruf], ["Nachricht", f.nachricht]];
   const filled = rows.filter(([, v]) => v);
   const text = filled.map(([k, v]) => `${k}: ${v}`).join("\n");
   const html = `<h2 style="font-family:Arial,sans-serif">${esc(subject)}</h2><table style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">` +
